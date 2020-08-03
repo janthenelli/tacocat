@@ -1,6 +1,6 @@
 from flask import Flask, render_template, flash, g, redirect, url_for, request
-from flask.ext.bcrypt import check_password_hash
-from flask.ext.login import LoginManager, current_user, login_required, login_user, logout_user
+from flask_bcrypt import check_password_hash
+from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from peewee import DoesNotExist
 
 import forms
@@ -28,12 +28,13 @@ def load_user(userid):
 @app.before_request
 def before_request():
     g.db = models.DATABASE
+    g.db.close()
     g.db.connect()
     g.user = current_user
     
     
-#@app.after_request
-#def after_request():
+# @app.after_request
+# def after_request():
 #    g.db.close()
 #    return response
 
@@ -116,11 +117,3 @@ if __name__ == '__main__':
         pass
 #        admin = models.User.get(models.User.email == 'jamesanthenelli@aol.com')
     app.run(debug=DEBUG, host=HOST, port=PORT)
-    
-        
-
-
-
-
-
-
